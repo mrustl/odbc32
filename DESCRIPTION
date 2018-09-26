@@ -1,10 +1,10 @@
 Package: odbc32
 Type: Package
-Title: What the Package Does (Title Case)
-Version: 0.1.0
+Title: 32-bit ODBC drivers from 64-bit R sessions
+Version: 0.1.1
 Author: Vaclav Hausenblas
 Maintainer: Vaclav Hausenblas <vaclav.hausenblas@gmail.com>
-Description: Tools for using 32bit ODBC drivers from 64bit R.
+Description: Tools for using 32-bit ODBC drivers from 64-bit R sessions. Based on socket connection between 64-bit R and host 32-bit R.
 License: MIT
 Encoding: UTF-8
 LazyData: true
