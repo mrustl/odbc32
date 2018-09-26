@@ -130,7 +130,6 @@ odbcConnectAccess2007_r2r <- function(access.file, uid = "", pwd = "", quote = T
   )
 }
 
-r2r::eval_remote(library(RODBC))
 
 #' @export
 stop_remote_odbc_server_access <- function() {
