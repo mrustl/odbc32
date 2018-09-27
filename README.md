@@ -11,6 +11,11 @@ You can install the released version of odbc32 from [GitHub](https://github.com/
 devtools::install_github("vh-d/odbc32")
 ```
 
+## Features
+
+`odbc32` is currently based on the functionality of RODBC package.
+
+
 ## Example
 
 Assuming existence of a DB.accdb file in your current working directory.
