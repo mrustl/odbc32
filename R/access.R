@@ -7,7 +7,8 @@ start_server_access2007 <- function(
   wait      = FALSE,
   address   = "tcp://localhost",
   port      = "5555",
-  Rbin      = file.path(R.home(), "bin", "i386", "Rscript.exe")
+  arch      = "i386",
+  Rbin      = file.path(R.home(), "bin", arch, "Rscript.exe")
 ) {
 
   stopifnot(file.exists(accdb_fp))
@@ -47,6 +48,7 @@ stop_remote_odbc_server_access <- function() {
 #' @export
 #'
 #' @examples
+#' #TBA
 remote_access_query <- function(...) {
   r2r::do.call_remote(..., args_remote = list(channel = .access_con))
 }
