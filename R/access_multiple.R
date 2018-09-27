@@ -7,14 +7,15 @@
 #'
 #' @return
 #' @export
-#'
+#' @rdname connect
 #' @examples
 start_server <- function(
   address   = "tcp://localhost",
   port      = "5555",
   Rbin      = file.path(R.home(), "bin", "i386", "Rscript.exe"),
   invisible = FALSE,
-  wait      = FALSE
+  wait      = FALSE,
+  global    = TRUE
 ) {
   stopifnot(file.exists(Rbin))
 
@@ -25,11 +26,24 @@ start_server <- function(
   #     x           = address),
   #   port),
 
-  system2(command = Rbin,
-          args    = c("-e", cmd),
-          invisible = invisible,
-          wait = wait)
+  system2(
+    command   = Rbin,
+    args      = c("-e", cmd),
+    invisible = invisible,
+    wait      = wait
+  )
+
+  socket <-
+    r2r::connect(
+      address = address,
+      port    = port
+    )
+
+  if (global) r2r::save_socket(socket)
+
+  return(invisible(socket))
 }
+
 
 #' Connect to an Access 2007 database
 #'
@@ -42,7 +56,13 @@ start_server <- function(
 #' @export
 #'
 #' @examples
-odbcConnectAccess2007_r2r <- function(access.file, uid = "", pwd = "", quote = TRUE) {
+odbcConnectAccess2007_r2r <- function(
+  access.file,
+  uid = "",
+  pwd = "",
+  quote = TRUE,
+  socket = NULL) {
+
   r2r::eval_remote(
     .access_con <<- odbcConnectAccess2007(access.file = access.file, uid = uid, pwd = pwd),
     data = list(access.file = access.file, uid = uid, pwd = pwd)
