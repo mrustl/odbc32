@@ -118,7 +118,7 @@ sqlGetResults_r2r <- function(...) {
 #' @export
 sqlUpdate_r2r <- function(data, name = NULL, ...) {
   remote_access_query(
-    what       = "sqlQuery",
+    what       = "sqlUpdate",
     args_local =
       c(
         list(dat       = data,
