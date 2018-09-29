@@ -111,6 +111,12 @@ odbcConnectAccess2007 <- function(
   return(new_con)
 }
 
+#' establish ODBC connection defined by DSN name
+#' @param dsn dsn
+#' @param uid user name
+#' @param pwd password
+#' @param socket socket
+#'
 #' @export
 odbcConnect <- function(
   dsn,
@@ -130,6 +136,41 @@ odbcConnect <- function(
         dsn = dsn,
         uid = uid,
         pwd = pwd
+      ),
+      socket = socket
+    )
+
+  new_con <-
+    list(
+      socket = socket,
+      ref    = ref
+    )
+
+  class(new_con) <- "odbc32"
+
+  return(new_con)
+}
+
+#' establish ODBC connection based on a connection string
+#' @param ... other args passed to RODBC::odbcDriverConnect()
+#' @param socket
+#'
+#' @export
+odbcDriverConnect <- function(
+  ...,
+  socket = .GlobalEnv$.r2r_socket) {
+
+# RODBC::odbcDriverConnect()
+  ref <-
+    r2r::eval_remote(
+      expr = .append_con(
+        do.call(
+          RODBC::odbcDriverConnect,
+          args = argslist
+        )
+      ),
+      data = list(
+        argslist = list(...)
       ),
       socket = socket
     )
@@ -177,6 +218,8 @@ print.odbc32 <- function(x) {
 }
 
 
+#' close odbc32 connection
+#' @param con odbc32 connection object
 #' @export
 odbcClose <- function(con) {
   r2r::eval_remote(
@@ -188,9 +231,9 @@ odbcClose <- function(con) {
 
 #' Closes odbc32 connection
 #'
-#' @param con
+#' @param con odbc32 connection object
 #'
-#' @return
+#' @return logical
 #' @export
 #'
 #' @examples
@@ -200,8 +243,234 @@ close.odbc32 <- function(con) {
 }
 
 
+#' list data sources
+#' @param type see type param of RODBC::odbcDataSources()
+#' @export
+odbcDataSources <- function(
+  type = c("all", "user", "system"),
+  socket = .GlobalEnv$.r2r_socket) {
+
+  r2r::do.call_remote(
+    RODBC::odbcDataSources,
+    args_local  = list(type = type),
+    quote = TRUE,
+    socket = con$socket
+  )
+}
+
+
+
+
+#' drop a db table
+#' @param con odbc32 connection object
+#' @param name name of db table to be dropped
+#'
+#' @export
+sqlDrop <- function(con, name) {
+  r2r::do.call_remote(
+    RODBC::sqlDrop,
+    args_local = list(
+      sqtable = name
+    ),
+    args_remote = list(
+      channel = .GlobalEnv$cons[[ref]]
+    ),
+    data = list(
+      ref = con$ref
+    ),
+    quote = TRUE,
+    socket = con$socket
+  )
+}
+
+#' clear/empty a db table
+#' @param con odbc32 connection object
+#' @param name name of db table to be dropped
+#'
+#' @export
+sqlClear <- function(con, name) {
+  # RODBC::sqlClear()
+  r2r::do.call_remote(
+    RODBC::sqlClear,
+    args_local = list(
+      sqtable = name
+    ),
+    args_remote = list(
+      channel = .GlobalEnv$cons[[ref]]
+    ),
+    data = list(
+      ref = con$ref
+    ),
+    quote = TRUE,
+    socket = con$socket
+  )
+}
+
+
+#' clear/empty a db table
+#' @param con odbc32 connection object
+#' @param commit logical
+#'
+#' @export
+odbcEndTran <- function(con, commit) {
+  # RODBC::odbcEndTran()
+  r2r::do.call_remote(
+    RODBC::odbcEndTran,
+    args_local = list(
+      commit = commit
+    ),
+    args_remote = list(
+      channel = .GlobalEnv$cons[[ref]]
+    ),
+    data = list(
+      ref = con$ref
+    ),
+    quote = TRUE,
+    socket = con$socket
+  )
+}
+
+
+
+#' list tables in DB
+#' @param con odbc32 connection object
+#' @param ... other args passed to RODBC::sqlTables() on remote
+#'
+#' @export
+sqlTables <- function(con, ...) {
+  # RODBC::sqlTables
+  r2r::do.call_remote(
+    RODBC::sqlTables,
+    args_remote =
+      list(
+        channel = .GlobalEnv$cons[[ref]]
+      ),
+    args_local = list(...),
+    data = list(
+      ref = con$ref
+    ),
+    quote = TRUE,
+    socket = con$socket
+  )
+}
+
+
+#' send query to a db and get results
+#' @param con odbc32 connection object
+#' @param query text of the query
+#' @param ... other args passed to RODBC::sqlQuery() on remote
+#'
+#' @export
+sqlQuery <- function(con, query, ...) {
+  # RODBC::sqlQuery()
+  r2r::do.call_remote(
+    RODBC::sqlQuery,
+    args_remote =
+      list(
+        channel = .GlobalEnv$cons[[ref]]
+      ),
+    args_local = c(
+      list(query = query),
+      list(...)
+    ),
+    data = list(
+      ref = con$ref
+    ),
+    quote = TRUE,
+    socket = con$socket
+  )
+}
+
+
+#' fetch db table
+#'
+#' @param con odbc32 connection object
+#' @param name name of db table to be dropped
+#' @param ... other args passed to RODBC::sqlFetch() on remote
+#'
+#' @return data.frame
+#' @export
+sqlFetch <- function(con, name, ...) {
+  # RODBC::sqlFetch()
+  r2r::do.call_remote(
+    RODBC::sqlFetch,
+    args_remote =
+      list(
+        channel = .GlobalEnv$cons[[ref]]
+      ),
+    args_local = c(
+      list(name = name),
+      list(...)
+    ),
+    data = list(
+      ref = con$ref
+    ),
+    quote = TRUE,
+    socket = con$socket
+  )
+}
+
+#' @export
+#' @rdname sqlFetch
+sqlFetchMore <- function(con, ...) {
+  # RODBC::sqlFetchMore()
+  r2r::do.call_remote(
+    RODBC::sqlFetchMore,
+    args_remote =
+      list(
+        channel = .GlobalEnv$cons[[ref]]
+      ),
+    args_local = list(...),
+    data = list(
+      ref = con$ref
+    ),
+    quote = TRUE,
+    socket = con$socket
+  )
+}
+
+
+
+#' update db table
+#' @param con odbc32 connection object
+#' @param data tabular data object
+#' @param name name of the resulting db table
+#' @param ... other args passed to RODBC::sqlUpdate() on remote
+#'
+#' @export
+sqlUpdate <- function(con, data, name = NULL, ...) {
+  # RODBC::sqlUpdate()
+  r2r::do.call_remote(
+    RODBC::sqlUpdate,
+    args_remote =
+      list(
+        channel = .GlobalEnv$cons[[ref]]
+      ),
+    args_local = c(
+      list(dat       = data,
+           tablename = name),
+      list(...)
+    ),
+    data = list(
+      ref = con$ref
+    ),
+    quote = TRUE,
+    socket = con$socket
+  )
+}
+
+
+
+#' @title upload table to a db
+#'
+#' @param con odbc32 object
+#' @param data tabular data
+#' @param name name of the resulting db table
+#' @param ... other args passed to RODBC::sqlSave() on remote
+#'
 #' @export
 sqlSave <- function(con, data, name = NULL, ...) {
+  # RODBC::sqlSave()
   r2r::do.call_remote(
     RODBC::sqlSave,
     args_local = c(
@@ -222,39 +491,3 @@ sqlSave <- function(con, data, name = NULL, ...) {
   )
 }
 
-
-#' @export
-sqlDrop <- function(con, name) {
-  r2r::do.call_remote(
-    RODBC::sqlDrop,
-    args_local = list(
-      sqtable = name
-    ),
-    args_remote = list(
-      channel = .GlobalEnv$cons[[ref]]
-    ),
-    data = list(
-      ref = con$ref
-    ),
-    quote = TRUE,
-    socket = con$socket
-  )
-}
-
-
-#' @export
-sqlTables <- function(con, ...) {
-  r2r::do.call_remote(
-    RODBC::sqlTables,
-    args_remote =
-      list(
-        channel = .GlobalEnv$cons[[ref]]
-      ),
-    args_local = list(...),
-    data = list(
-      ref = con$ref
-    ),
-    quote = TRUE,
-    socket = con$socket
-  )
-}
