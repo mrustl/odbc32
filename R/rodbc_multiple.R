@@ -399,7 +399,7 @@ sqlFetch <- function(con, name, ...) {
         channel = .GlobalEnv$cons[[ref]]
       ),
     args_local = c(
-      list(name = name),
+      list(sqtable = name),
       list(...)
     ),
     data = list(
