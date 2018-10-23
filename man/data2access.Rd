@@ -2,12 +2,28 @@
 % Please edit documentation in R/rodbc_tempfile.R
 \name{data2access}
 \alias{data2access}
-\title{export data from an R object to MS Access db via separate 32-bit Rscript}
+\title{writing data into MS Access via 32bit R session script}
 \usage{
-data2access(data, accdb_file, ...)
+data2access(data, accdb_file, overwrite = FALSE, fast = TRUE,
+  safer = TRUE, rownames = FALSE, ...)
+}
+\arguments{
+\item{data}{a named list of tables}
+
+\item{accdb_file}{path to accdb file}
+
+\item{overwrite}{logical; TRUE for an attempt to drop each table first.}
+
+\item{fast}{passed to RDOBC::sqlSave}
+
+\item{safer}{passed to RDOBC::sqlSave}
+
+\item{rownames}{passed to RDOBC::sqlSave}
+
+\item{...}{passed to RDOBC::sqlSave}
 }
 \description{
-export data from an R object to MS Access db via separate 32-bit Rscript
+Procedure for easier exporting of data from an R into MS Access database via separate 32-bit R session script
 }
 \details{
 \describe{

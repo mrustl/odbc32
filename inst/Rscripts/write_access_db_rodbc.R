@@ -43,7 +43,7 @@ message(str_interp("Writing into '${params$accdb_file}'"))
 
 for (tab_name in names(data)) {
 
-  if (params$overwrite) {
+  if (length(params$overwrite) && params$overwrite) {
     message(str_interp("Trying to drop '${tab_name}'"))
     try(RODBC::sqlDrop(.access_con, tab_name))
   }
@@ -62,13 +62,17 @@ for (tab_name in names(data)) {
   message(str_interp("Writing '${tab_name}'"))
 
   try(
-    RODBC::sqlSave(
-      channel   = .access_con,
-      dat       = as.data.frame(data[[tab_name]]),
-      tablename = tab_name,
-      fast      = TRUE,
-      safer     = TRUE,
-      rownames  = FALSE)
+    do.call(
+      what = RODBC::sqlSave,
+      args = c(
+        list(
+          channel   = .access_con,
+          dat       = as.data.frame(data[[tab_name]]),
+          tablename = tab_name
+        ),
+        params[setdiff(names(params), c("convert_dates", "accdb_file", "overwrite"))]
+      )
+    )
   )
 }
 
