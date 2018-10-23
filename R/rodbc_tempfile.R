@@ -38,8 +38,8 @@ data2access <- function(
   ...) {
 
   # check arguments
-  if (!is.list(data)) stop(substitute(data), "needs to be a named list!")
-  if (sum(names(data) != "") != length(data)) stop(substitute(data), "needs to be a named list!")
+  if (!is.list(data)) stop(substitute(data), " needs to be a named list!")
+  if (sum(names(data) != "") != length(data)) stop(substitute(data), " needs to be a named list!")
 
   # save any options as a list
   params = list(
