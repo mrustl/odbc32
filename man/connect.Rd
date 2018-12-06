@@ -6,7 +6,8 @@
 \usage{
 start_server(address = "tcp://localhost", port = "5555",
   arch = "i386", Rbin = file.path(R.home(), "bin", arch,
-  "Rscript.exe"), invisible = FALSE, wait = FALSE, global = TRUE)
+  "Rscript.exe"), invisible = FALSE, wait = FALSE, global = TRUE,
+  debug = FALSE)
 }
 \arguments{
 \item{address}{host address}

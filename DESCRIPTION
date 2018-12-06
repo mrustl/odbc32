@@ -8,7 +8,7 @@ Description: Tools for using 32-bit ODBC drivers from 64-bit R sessions. Based o
 License: MIT
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 6.1.0
+RoxygenNote: 6.1.1
 Imports: 
     r2r,
     RODBC

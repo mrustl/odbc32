@@ -18,13 +18,14 @@ start_server <- function(
   Rbin      = file.path(R.home(), "bin", arch, "Rscript.exe"),
   invisible = FALSE,
   wait      = FALSE,
-  global    = TRUE
+  global    = TRUE,
+  debug     = FALSE
 ) {
   stopifnot(file.exists(Rbin))
 
   cmd <-
     sprintf(
-      '"library(r2r);library(RODBC);library(odbc32);cons <- list();r2r::server(debug = TRUE)"'
+      '"library(r2r);library(RODBC);library(odbc32);cons <- list();r2r::server(debug = %s)"', as.character(debug)
     )
 
   # accdb_fp,
