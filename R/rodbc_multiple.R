@@ -36,7 +36,7 @@ start_server <- function(
 
   system2(
     command   = Rbin,
-    args      = c("-e", cmd),
+    args      = c("--vanilla", "-e", cmd),
     invisible = invisible,
     wait      = wait
   )
