@@ -3,7 +3,8 @@
 #' @param address host address
 #' @param port    port
 #' @param arch    architecture
-#' @param Rbin    path to R binary
+#' @param Rbin    path to Rscript binary
+#' @param r_args  further arguments to Rscript command
 #' @param invisible logical; visibility of the new session window
 #'
 #' @return socket connection (invisible)
@@ -16,6 +17,7 @@ start_server <- function(
   port      = "5555",
   arch      = "i386",
   Rbin      = file.path(R.home(), "bin", arch, "Rscript.exe"),
+  r_args    = NULL, # --vanilla
   invisible = FALSE,
   wait      = FALSE,
   global    = TRUE,
@@ -36,7 +38,7 @@ start_server <- function(
 
   system2(
     command   = Rbin,
-    args      = c("--vanilla", "-e", cmd),
+    args      = c(r_args, "-e", cmd),
     invisible = invisible,
     wait      = wait
   )
