@@ -4,10 +4,11 @@
 \alias{start_server}
 \title{Start a new R session with a running r2r server}
 \usage{
-start_server(address = "tcp://localhost", port = "5555",
-  arch = "i386", Rbin = file.path(R.home(), "bin", arch,
-  "Rscript.exe"), r_args = NULL, invisible = FALSE, wait = FALSE,
-  global = TRUE, debug = FALSE)
+start_server(address = "tcp://localhost",
+  port = pbdZMQ::random_open_port(), arch = "i386",
+  Rbin = file.path(R.home(), "bin", arch, "Rscript.exe"),
+  r_args = NULL, invisible = FALSE, wait = FALSE, global = TRUE,
+  debug = FALSE)
 }
 \arguments{
 \item{address}{host address}

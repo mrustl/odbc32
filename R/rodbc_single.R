@@ -5,8 +5,8 @@ start_server_access2007 <- function(
   accdb_fp,
   invisible = FALSE,
   wait      = FALSE,
-  address   = "tcp://localhost",
-  port      = "5555",
+  address   = "tcp://*",
+  port      = pbdZMQ::random_open_port(),
   arch      = "i386",
   Rbin      = file.path(R.home(), "bin", arch, "Rscript.exe")
 ) {

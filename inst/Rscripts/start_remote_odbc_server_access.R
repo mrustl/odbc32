@@ -26,14 +26,13 @@ if (!file.exists(accdb_file)) stop(str_interp("Output/access file '${accdb_file}
 
 # additional arguments
 address <- if (length(script_args) >= 2) script_args[2] else "tcp://*"
-port    <- if (length(script_args) >= 3) script_args[3] else 5555
-
-
+port    <- if (length(script_args) >= 3) script_args[3] else pbdZMQ::random_open_port()
 
 # open access db ----------------------------------------------------------
 
 message(str_interp("Connectiong to '${accdb_file}'"))
 .access_con <- odbcConnectAccess2007(access.file = accdb_file)
+
 
 # MAIN: start r2r server ------------------------------------
 r2r::server(

@@ -14,7 +14,7 @@
 #' #TBA
 start_server <- function(
   address   = "tcp://localhost",
-  port      = "5555",
+  port      = pbdZMQ::random_open_port(),
   arch      = "i386",
   Rbin      = file.path(R.home(), "bin", arch, "Rscript.exe"),
   r_args    = NULL, # --vanilla
@@ -27,7 +27,7 @@ start_server <- function(
 
   cmd <-
     sprintf(
-      '"library(r2r);library(RODBC);library(odbc32);cons <- list();r2r::server(debug = %s)"', as.character(debug)
+      '"library(r2r);library(RODBC);library(odbc32);cons <- list();r2r::server(port = %i, debug = %s)"', as.integer(port), as.character(debug)
     )
 
   # accdb_fp,
@@ -46,7 +46,7 @@ start_server <- function(
   socket <-
     r2r::connect(
       address = address,
-      port    = port
+      port    = as.integer(port)
     )
 
   if (global) r2r::save_socket(socket)
