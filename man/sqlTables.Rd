@@ -4,10 +4,12 @@
 \alias{sqlTables}
 \title{list tables in DB}
 \usage{
-sqlTables(con, ...)
+sqlTables(con, errors = NULL, ...)
 }
 \arguments{
 \item{con}{odbc32 connection object}
+
+\item{errors}{ignored}
 
 \item{...}{other args passed to RODBC::sqlTables() on remote}
 }

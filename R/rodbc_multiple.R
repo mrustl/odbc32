@@ -24,27 +24,27 @@ start_server <- function(
   debug     = FALSE
 ) {
   stopifnot(file.exists(Rbin))
-
+  
   cmd <-
     sprintf(
       '"library(r2r);library(RODBC);library(odbc32);cons <- list();r2r::server(port = %i, debug = %s)"', as.integer(port), as.character(debug)
     )
-
+  
   system2(
     command   = Rbin,
     args      = c(r_args, "-e", cmd),
     invisible = invisible,
     wait      = wait
   )
-
+  
   socket <-
     r2r::connect(
       address = address,
       port    = as.integer(port)
     )
-
+  
   if (global) r2r::save_socket(socket)
-
+  
   return(invisible(socket))
 }
 
@@ -80,7 +80,7 @@ odbcConnectAccess2007 <- function(
   uid    = "",
   pwd    = "",
   socket = .GlobalEnv$.r2r_socket) {
-
+  
   ref <-
     r2r::eval_remote(
       expr = .append_con(
@@ -96,15 +96,15 @@ odbcConnectAccess2007 <- function(
       ),
       socket = socket
     )
-
+  
   new_con <-
     list(
       socket = socket,
       ref    = ref
     )
-
+  
   class(new_con) <- "odbc32"
-
+  
   return(new_con)
 }
 
@@ -120,7 +120,7 @@ odbcConnect <- function(
   uid = "",
   pwd = "",
   socket = .GlobalEnv$.r2r_socket) {
-
+  
   ref <-
     r2r::eval_remote(
       expr = .append_con(
@@ -136,15 +136,15 @@ odbcConnect <- function(
       ),
       socket = socket
     )
-
+  
   new_con <-
     list(
       socket = socket,
       ref    = ref
     )
-
+  
   class(new_con) <- "odbc32"
-
+  
   return(new_con)
 }
 
@@ -156,8 +156,8 @@ odbcConnect <- function(
 odbcDriverConnect <- function(
   ...,
   socket = .GlobalEnv$.r2r_socket) {
-
-# RODBC::odbcDriverConnect()
+  
+  # RODBC::odbcDriverConnect()
   ref <-
     r2r::eval_remote(
       expr = .append_con(
@@ -171,15 +171,15 @@ odbcDriverConnect <- function(
       ),
       socket = socket
     )
-
+  
   new_con <-
     list(
       socket = socket,
       ref    = ref
     )
-
+  
   class(new_con) <- "odbc32"
-
+  
   return(new_con)
 }
 
@@ -246,7 +246,7 @@ close.odbc32 <- function(con) {
 odbcDataSources <- function(
   type = c("all", "user", "system"),
   socket = .GlobalEnv$.r2r_socket) {
-
+  
   r2r::do.call_remote(
     RODBC::odbcDataSources,
     args_local  = list(type = type),
@@ -264,20 +264,26 @@ odbcDataSources <- function(
 #'
 #' @export
 sqlDrop <- function(con, name) {
-  r2r::do.call_remote(
-    RODBC::sqlDrop,
-    args_local = list(
-      sqtable = name
-    ),
-    args_remote = list(
-      channel = .GlobalEnv$cons[[ref]]
-    ),
-    data = list(
-      ref = con$ref
-    ),
-    quote = TRUE,
-    socket = con$socket
-  )
+  result <- 
+    r2r::do.call_remote(
+      RODBC::sqlDrop,
+      args_local = list(
+        sqtable = name, 
+        errors = FALSE
+      ),
+      args_remote = list(
+        channel = .GlobalEnv$cons[[ref]]
+      ),
+      data = list(
+        ref = con$ref
+      ),
+      quote = TRUE,
+      socket = con$socket
+    )
+  if (is.numeric(result) && result == -1) {
+    stop(odbcGetErrMsg(con))
+  } else 
+    return(result)
 }
 
 #' clear/empty a db table
@@ -287,20 +293,26 @@ sqlDrop <- function(con, name) {
 #' @export
 sqlClear <- function(con, name) {
   # RODBC::sqlClear()
-  r2r::do.call_remote(
-    RODBC::sqlClear,
-    args_local = list(
-      sqtable = name
-    ),
-    args_remote = list(
-      channel = .GlobalEnv$cons[[ref]]
-    ),
-    data = list(
-      ref = con$ref
-    ),
-    quote = TRUE,
-    socket = con$socket
-  )
+  result <- 
+    r2r::do.call_remote(
+      RODBC::sqlClear,
+      args_local = list(
+        sqtable = name,
+        errors = FALSE
+      ),
+      args_remote = list(
+        channel = .GlobalEnv$cons[[ref]]
+      ),
+      data = list(
+        ref = con$ref
+      ),
+      quote = TRUE,
+      socket = con$socket
+    )  
+  if (is.numeric(result) && result == -1) {
+    stop(odbcGetErrMsg(con))
+  } else 
+    return(result)
 }
 
 
@@ -311,44 +323,58 @@ sqlClear <- function(con, name) {
 #' @export
 odbcEndTran <- function(con, commit) {
   # RODBC::odbcEndTran()
-  r2r::do.call_remote(
-    RODBC::odbcEndTran,
-    args_local = list(
-      commit = commit
-    ),
-    args_remote = list(
-      channel = .GlobalEnv$cons[[ref]]
-    ),
-    data = list(
-      ref = con$ref
-    ),
-    quote = TRUE,
-    socket = con$socket
-  )
+  result <- 
+    r2r::do.call_remote(
+      RODBC::odbcEndTran,
+      args_local = list(
+        commit = commit
+      ),
+      args_remote = list(
+        channel = .GlobalEnv$cons[[ref]]
+      ),
+      data = list(
+        ref = con$ref
+      ),
+      quote = TRUE,
+      socket = con$socket
+    )  
+  if (is.numeric(result) && result == -1) {
+    stop(odbcGetErrMsg(con))
+  } else 
+    return(result)
 }
 
 
 
 #' list tables in DB
 #' @param con odbc32 connection object
+#' @param errors ignored
 #' @param ... other args passed to RODBC::sqlTables() on remote
 #'
 #' @export
-sqlTables <- function(con, ...) {
+sqlTables <- function(con, errors = NULL, ...) {
   # RODBC::sqlTables
-  r2r::do.call_remote(
-    RODBC::sqlTables,
-    args_remote =
-      list(
-        channel = .GlobalEnv$cons[[ref]]
+  result <- 
+    r2r::do.call_remote(
+      RODBC::sqlTables,
+      args_remote =
+        list(
+          channel = .GlobalEnv$cons[[ref]]
+        ),
+      args_local = c(
+        list(errors = FALSE),
+        list(...)
       ),
-    args_local = list(...),
-    data = list(
-      ref = con$ref
-    ),
-    quote = TRUE,
-    socket = con$socket
-  )
+      data = list(
+        ref = con$ref
+      ),
+      quote = TRUE,
+      socket = con$socket
+    )  
+  if (is.numeric(result) && result == -1) {
+    stop(odbcGetErrMsg(con))
+  } else 
+    return(result)
 }
 
 
@@ -358,24 +384,33 @@ sqlTables <- function(con, ...) {
 #' @param ... other args passed to RODBC::sqlQuery() on remote
 #'
 #' @export
-sqlQuery <- function(con, query, ...) {
+sqlQuery <- function(con, query, errors = NULL, ...) {
   # RODBC::sqlQuery()
-  r2r::do.call_remote(
-    RODBC::sqlQuery,
-    args_remote =
-      list(
-        channel = .GlobalEnv$cons[[ref]]
+  result <- 
+    r2r::do.call_remote(
+      RODBC::sqlQuery,
+      args_remote =
+        list(
+          channel = .GlobalEnv$cons[[ref]]
+        ),
+      args_local = c(
+        list(
+          query = query, 
+          errors = FALSE
+        ),
+        list(...)
       ),
-    args_local = c(
-      list(query = query),
-      list(...)
-    ),
-    data = list(
-      ref = con$ref
-    ),
-    quote = TRUE,
-    socket = con$socket
-  )
+      data = list(
+        ref = con$ref
+      ),
+      quote = TRUE,
+      socket = con$socket
+    )
+  
+  if (is.numeric(result) && result == -1) {
+    stop(odbcGetErrMsg(con))
+  } else 
+    return(result)
 }
 
 
@@ -389,41 +424,51 @@ sqlQuery <- function(con, query, ...) {
 #' @export
 sqlFetch <- function(con, name, ...) {
   # RODBC::sqlFetch()
-  r2r::do.call_remote(
-    RODBC::sqlFetch,
-    args_remote =
-      list(
-        channel = .GlobalEnv$cons[[ref]]
+  result <- 
+    r2r::do.call_remote(
+      RODBC::sqlFetch,
+      args_remote =
+        list(
+          channel = .GlobalEnv$cons[[ref]]
+        ),
+      args_local = c(
+        list(sqtable = name),
+        list(...)
       ),
-    args_local = c(
-      list(sqtable = name),
-      list(...)
-    ),
-    data = list(
-      ref = con$ref
-    ),
-    quote = TRUE,
-    socket = con$socket
-  )
+      data = list(
+        ref = con$ref
+      ),
+      quote = TRUE,
+      socket = con$socket
+    )  
+  if (is.numeric(result) && result == -1) {
+    stop(odbcGetErrMsg(con))
+  } else 
+    return(result)
 }
 
 #' @export
 #' @rdname sqlFetch
 sqlFetchMore <- function(con, ...) {
   # RODBC::sqlFetchMore()
-  r2r::do.call_remote(
-    RODBC::sqlFetchMore,
-    args_remote =
-      list(
-        channel = .GlobalEnv$cons[[ref]]
+  result <- 
+    r2r::do.call_remote(
+      RODBC::sqlFetchMore,
+      args_remote =
+        list(
+          channel = .GlobalEnv$cons[[ref]]
+        ),
+      args_local = list(...),
+      data = list(
+        ref = con$ref
       ),
-    args_local = list(...),
-    data = list(
-      ref = con$ref
-    ),
-    quote = TRUE,
-    socket = con$socket
-  )
+      quote = TRUE,
+      socket = con$socket
+    )  
+  if (is.numeric(result) && result == -1) {
+    stop(odbcGetErrMsg(con))
+  } else 
+    return(result)
 }
 
 
@@ -453,7 +498,7 @@ sqlUpdate <- function(con, data, name = NULL, ...) {
     ),
     quote = TRUE,
     socket = con$socket
-  )
+  ) 
 }
 
 
@@ -485,6 +530,24 @@ sqlSave <- function(con, data, name = NULL, ...) {
     ),
     quote = TRUE,
     socket = con$socket
-  )
+  )  
 }
 
+#' Get error message
+#'
+#' @param con odbc32 object
+#'
+#' @export
+odbcGetErrMsg <- function(con) {
+  r2r::do.call_remote(
+    RODBC::odbcGetErrMsg,
+    args_remote = list(
+      channel = .GlobalEnv$cons[[ref]]
+    ),
+    data = list(
+      ref = con$ref
+    ),
+    quote = TRUE,
+    socket = con$socket
+  )
+}
