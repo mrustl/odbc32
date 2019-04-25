@@ -43,6 +43,18 @@ test_that("Queries can be executed", {
 })
 
 
+
+test_that("Queries fails with error", {
+  expect_error(
+    res <- 
+      odbc32::sqlQuery(
+        accdb_con, 
+        query = "select * from nonexistent"
+      )
+  )
+})
+
+
 test_that("Tables can be deleted", {
   odbc32::sqlDrop(accdb_con, name = "testtable1")
   table_list <- odbc32::sqlTables(accdb_con)
