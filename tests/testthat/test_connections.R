@@ -61,6 +61,10 @@ test_that("Tables can be deleted", {
   expect_false("testtable1" %in% table_list$TABLE_NAME)
 })
 
+test_that("Tables cannot be deleted twice", {
+  expect_error(odbc32::sqlDrop(accdb_con, name = "testtable1"))
+})
+
 
 test_that("Connections can be closed", {
   expect_true(odbc32::odbcClose(accdb_con))
