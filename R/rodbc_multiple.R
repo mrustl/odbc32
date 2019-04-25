@@ -30,12 +30,6 @@ start_server <- function(
       '"library(r2r);library(RODBC);library(odbc32);cons <- list();r2r::server(port = %i, debug = %s)"', as.integer(port), as.character(debug)
     )
 
-  # accdb_fp,
-  # sub(pattern     = "localhost",
-  #     replacement = "*",
-  #     x           = address),
-  #   port),
-
   system2(
     command   = Rbin,
     args      = c(r_args, "-e", cmd),
