@@ -4,7 +4,7 @@
 \alias{sqlQuery}
 \title{send query to a db and get results}
 \usage{
-sqlQuery(con, query, ...)
+sqlQuery(con, query, errors = NULL, ...)
 }
 \arguments{
 \item{con}{odbc32 connection object}

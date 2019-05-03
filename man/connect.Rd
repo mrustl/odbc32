@@ -4,9 +4,10 @@
 \alias{start_server}
 \title{Start a new R session with a running r2r server}
 \usage{
-start_server(address = "tcp://localhost", port = "5555",
-  arch = "i386", Rbin = file.path(R.home(), "bin", arch,
-  "Rscript.exe"), invisible = FALSE, wait = FALSE, global = TRUE,
+start_server(address = "tcp://localhost",
+  port = pbdZMQ::random_open_port(), arch = "i386",
+  Rbin = file.path(R.home(), "bin", arch, "Rscript.exe"),
+  r_args = NULL, invisible = FALSE, wait = FALSE, global = TRUE,
   debug = FALSE)
 }
 \arguments{
@@ -16,7 +17,9 @@ start_server(address = "tcp://localhost", port = "5555",
 
 \item{arch}{architecture}
 
-\item{Rbin}{path to R binary}
+\item{Rbin}{path to Rscript binary}
+
+\item{r_args}{further arguments to Rscript command}
 
 \item{invisible}{logical; visibility of the new session window}
 }
