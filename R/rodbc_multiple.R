@@ -533,12 +533,16 @@ sqlSave <- function(con, data, name = NULL, ...) {
   )
 }
 
-#' @rdname setSqlTypeInfo
+
+#' Information on an ODBC connection.
+#'
+#' @description see RODBC::odbcGetInfo()
+#'
+#' @param con odbc32 connection object
 #' @export
-#' @examples
-getSqlTypeInfo <- function(con) {
+odbcGetInfo <- function(con) {
   r2r::do.call_remote(
-    RODBC::getSqlTypeInfo,
+    RODBC::odbcGetInfo,
     args_remote = list(
       channel = .GlobalEnv$cons[[ref]]
     ),
@@ -550,27 +554,36 @@ getSqlTypeInfo <- function(con) {
   )
 }
 
+#' @rdname setSqlTypeInfo
+#' @export
+#' @examples
+getSqlTypeInfo <- function(driver) {
+  r2r::do.call_remote(
+    RODBC::getSqlTypeInfo,
+    args_local = list(
+      driver = driver
+    ),
+    quote = TRUE,
+    socket = con$socket
+  )
+}
+
 
 #' Specify or retrieve a mapping of R types to DBMS datatypes.
 #'
-#' @param con odbc32 connection object
+#' @param driver
 #' @param value passed to \code{RODBC::setSqlTypeInfo}
 #'
 #' @return
 #' For setSqlTypeInfo none.
 #' For getSqlTypeInfo with an argument, a named list. Without an argument, a data frame.
 #' @export
-setSqlTypeInfo <- function(con, value) {
+setSqlTypeInfo <- function(driver, value) {
   r2r::do.call_remote(
     RODBC::setSqlTypeInfo,
     args_local = list(
+      driver = driver,
       value = value
-    ),
-    args_remote = list(
-      channel = .GlobalEnv$cons[[ref]]
-    ),
-    data = list(
-      ref = con$ref
     ),
     quote = TRUE,
     socket = con$socket

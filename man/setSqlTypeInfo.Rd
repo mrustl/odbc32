@@ -5,13 +5,11 @@
 \alias{setSqlTypeInfo}
 \title{Specify or retrieve a mapping of R types to DBMS datatypes.}
 \usage{
-getSqlTypeInfo(con)
+getSqlTypeInfo(driver)
 
-setSqlTypeInfo(con, value)
+setSqlTypeInfo(driver, value)
 }
 \arguments{
-\item{con}{odbc32 connection object}
-
 \item{value}{passed to \code{RODBC::setSqlTypeInfo}}
 }
 \value{
