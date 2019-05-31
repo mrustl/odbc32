@@ -557,7 +557,7 @@ odbcGetInfo <- function(con) {
 #' @rdname setSqlTypeInfo
 #' @export
 #' @examples
-getSqlTypeInfo <- function(driver) {
+getSqlTypeInfo <- function(con, driver) {
   r2r::do.call_remote(
     RODBC::getSqlTypeInfo,
     args_local = list(
@@ -571,6 +571,7 @@ getSqlTypeInfo <- function(driver) {
 
 #' Specify or retrieve a mapping of R types to DBMS datatypes.
 #'
+#' @param con odbc32 object
 #' @param driver
 #' @param value passed to \code{RODBC::setSqlTypeInfo}
 #'
@@ -578,7 +579,7 @@ getSqlTypeInfo <- function(driver) {
 #' For setSqlTypeInfo none.
 #' For getSqlTypeInfo with an argument, a named list. Without an argument, a data frame.
 #' @export
-setSqlTypeInfo <- function(driver, value) {
+setSqlTypeInfo <- function(con, driver, value) {
   r2r::do.call_remote(
     RODBC::setSqlTypeInfo,
     args_local = list(
