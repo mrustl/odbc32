@@ -591,6 +591,22 @@ setSqlTypeInfo <- function(con, driver, value) {
   )
 }
 
+#' @rdname setSqlTypeInfo
+#' @details \code{setSqlTypeInfo2} is a custom implementation for cases when setSqlTypeInfo fails on "locked environment" error
+#' @export
+setSqlTypeInfo2 <- function(con, driver, value) {
+  r2r::do.call_remote(
+    what = assign,
+    args_remote = list(
+      envir = RODBC:::typesR2DBMS
+    ),
+    args_local = list(
+      x     = driver,
+      value = value
+    ),
+    quote = TRUE,
+    socket = con$socket)
+}
 
 
 

@@ -3,11 +3,14 @@
 \name{getSqlTypeInfo}
 \alias{getSqlTypeInfo}
 \alias{setSqlTypeInfo}
+\alias{setSqlTypeInfo2}
 \title{Specify or retrieve a mapping of R types to DBMS datatypes.}
 \usage{
 getSqlTypeInfo(con, driver)
 
 setSqlTypeInfo(con, driver, value)
+
+setSqlTypeInfo2(con, driver, value)
 }
 \arguments{
 \item{con}{odbc32 object}
@@ -20,4 +23,7 @@ For getSqlTypeInfo with an argument, a named list. Without an argument, a data f
 }
 \description{
 Specify or retrieve a mapping of R types to DBMS datatypes.
+}
+\details{
+\code{setSqlTypeInfo2} is a custom implementation for cases when setSqlTypeInfo fails on "locked environment" error
 }
