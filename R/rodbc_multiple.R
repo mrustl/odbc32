@@ -85,7 +85,7 @@ odbcConnectAccess2007 <- function(
 
   ref <- r2r::eval_remote(
     expr = .append_con(do.call(RODBC::odbcConnectAccess2007, arguments)),
-    data = arguments,
+    data = list(arguments = arguments),
     socket = socket
   )
 
@@ -109,7 +109,7 @@ odbcConnect <- function(
 
   ref <- r2r::eval_remote(
     expr = .append_con(do.call(RODBC::odbcConnect, arguments)),
-    data = arguments,
+    data = list(arguments = arguments),
     socket = socket
   )
 
