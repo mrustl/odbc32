@@ -105,21 +105,13 @@ odbcConnect <- function(
   pwd = "",
   socket = .GlobalEnv$.r2r_socket) {
 
-  ref <-
-    r2r::eval_remote(
-      expr = .append_con(
-        RODBC::odbcConnect(
-          dsn = dsn,
-          uid = uid,
-          pwd = pwd)
-      ),
-      data = list(
-        dsn = dsn,
-        uid = uid,
-        pwd = pwd
-      ),
-      socket = socket
-    )
+  arguments <- list(dsn = dsn, uid = uid, pwd = pwd)
+
+  ref <- r2r::eval_remote(
+    expr = .append_con(do.call(RODBC::odbcConnect, arguments)),
+    data = arguments,
+    socket = socket
+  )
 
   create_odbc32_object(socket, ref)
 }
