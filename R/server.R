@@ -9,9 +9,9 @@
 #' @examples
 #' #TBA
 .append_con <- function(con) {
-  .GlobalEnv$cons[[length(cons) + 1]] <- con
+  .GlobalEnv$cons[[length(.GlobalEnv$cons) + 1]] <- con
 
-  return(length(.GlobalEnv$cons))
+  length(.GlobalEnv$cons)
 }
 
 
