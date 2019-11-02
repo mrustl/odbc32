@@ -207,7 +207,7 @@ print.odbc32 <- function(x) {
 #' @export
 odbcClose <- function(con) {
   r2r::eval_remote(
-    RODBC::odbcClose(channel = .GlobalEnv$cons[[ref]]),
+    RODBC::odbcClose(channel = .get_con(ref)),
     data   = list(ref = con$ref),
     socket = con$socket
   )
@@ -259,7 +259,7 @@ sqlDrop <- function(con, name) {
         errors = FALSE
       ),
       args_remote = list(
-        channel = .GlobalEnv$cons[[ref]]
+        channel = .get_con(ref)
       ),
       data = list(
         ref = con$ref
@@ -288,7 +288,7 @@ sqlClear <- function(con, name) {
         errors = FALSE
       ),
       args_remote = list(
-        channel = .GlobalEnv$cons[[ref]]
+        channel = .get_con(ref)
       ),
       data = list(
         ref = con$ref
@@ -317,7 +317,7 @@ odbcEndTran <- function(con, commit) {
         commit = commit
       ),
       args_remote = list(
-        channel = .GlobalEnv$cons[[ref]]
+        channel = .get_con(ref)
       ),
       data = list(
         ref = con$ref
@@ -346,7 +346,7 @@ sqlTables <- function(con, errors = NULL, ...) {
       RODBC::sqlTables,
       args_remote =
         list(
-          channel = .GlobalEnv$cons[[ref]]
+          channel = .get_con(ref)
         ),
       args_local = c(
         list(errors = FALSE),
@@ -378,7 +378,7 @@ sqlQuery <- function(con, query, errors = NULL, ...) {
       RODBC::sqlQuery,
       args_remote =
         list(
-          channel = .GlobalEnv$cons[[ref]]
+          channel = .get_con(ref)
         ),
       args_local = c(
         list(
@@ -416,7 +416,7 @@ sqlFetch <- function(con, name, ...) {
       RODBC::sqlFetch,
       args_remote =
         list(
-          channel = .GlobalEnv$cons[[ref]]
+          channel = .get_con(ref)
         ),
       args_local = c(
         list(sqtable = name),
@@ -443,7 +443,7 @@ sqlFetchMore <- function(con, ...) {
       RODBC::sqlFetchMore,
       args_remote =
         list(
-          channel = .GlobalEnv$cons[[ref]]
+          channel = .get_con(ref)
         ),
       args_local = list(...),
       data = list(
@@ -473,7 +473,7 @@ sqlUpdate <- function(con, data, name = NULL, ...) {
     RODBC::sqlUpdate,
     args_remote =
       list(
-        channel = .GlobalEnv$cons[[ref]]
+        channel = .get_con(ref)
       ),
     args_local = c(
       list(dat       = data,
@@ -510,7 +510,7 @@ sqlSave <- function(con, data, name = NULL, ...) {
       list(...)
     ),
     args_remote = list(
-      channel = .GlobalEnv$cons[[ref]]
+      channel = .get_con(ref)
     ),
     data = list(
       ref = con$ref
@@ -531,7 +531,7 @@ odbcGetInfo <- function(con) {
   r2r::do.call_remote(
     RODBC::odbcGetInfo,
     args_remote = list(
-      channel = .GlobalEnv$cons[[ref]]
+      channel = .get_con(ref)
     ),
     data = list(
       ref = con$ref
@@ -606,7 +606,7 @@ odbcGetErrMsg <- function(con) {
   r2r::do.call_remote(
     RODBC::odbcGetErrMsg,
     args_remote = list(
-      channel = .GlobalEnv$cons[[ref]]
+      channel = .get_con(ref)
     ),
     data = list(
       ref = con$ref
