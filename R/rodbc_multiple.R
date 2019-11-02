@@ -62,6 +62,33 @@ stop_server <- function(...) {
   r2r::stop_remote(...)
 }
 
+#' Connect to an Access database (*.mdb)
+#'
+#' @param access.file path to .mdb file
+#' @param uid user name
+#' @param pwd password
+#'
+#' @return odbc32 object
+#' @export
+#'
+#' @examples
+#' #TBA
+odbcConnectAccess <- function(
+  access.file,
+  uid    = "",
+  pwd    = "",
+  socket = .GlobalEnv$.r2r_socket) {
+
+  arguments <- list(access.file = access.file, uid = uid, pwd = pwd)
+
+  ref <- r2r::eval_remote(
+    expr = .append_con(do.call(RODBC::odbcConnectAccess, arguments)),
+    data = list(arguments = arguments),
+    socket = socket
+  )
+
+  create_odbc32_object(socket, ref)
+}
 
 
 #' Connect to an Access 2007 database
