@@ -34,7 +34,6 @@ start_server_access2007 <- function(
 }
 
 
-
 #' @export
 stop_remote_odbc_server_access <- function() {
   r2r::stop_remote()
@@ -59,12 +58,7 @@ sqlSave_r2r <- function(data, name = NULL, ...) {
   # RODBC::sqlSave()
   remote_access_query(
     what       = "sqlSave",
-    args_local =
-      c(
-        list(dat       = data,
-             tablename = name),
-        list(...)
-      )
+    args_local = list(dat = data, tablename = name, ...)
   )
 }
 
@@ -73,11 +67,7 @@ sqlDrop_r2r <- function(name, ...) {
   # RODBC::sqlDrop()
   remote_access_query(
     what       = "sqlDrop",
-    args_local =
-      c(
-        list(sqtable = name),
-        list(...)
-      )
+    args_local = list(sqtable = name, ...)
   )
 }
 
@@ -86,11 +76,7 @@ sqlQuery_r2r <- function(query, ...) {
   # RODBC::sqlQuery()
   remote_access_query(
     what       = "sqlQuery",
-    args_local =
-      c(
-        list(query = query),
-        list(...)
-      )
+    args_local = list(query = query, ...)
   )
 }
 
@@ -119,14 +105,10 @@ sqlGetResults_r2r <- function(...) {
 sqlUpdate_r2r <- function(data, name = NULL, ...) {
   remote_access_query(
     what       = "sqlUpdate",
-    args_local =
-      c(
-        list(dat       = data,
-             tablename = name),
-        list(...)
-      )
+    args_local = list(dat = data, tablename = name, ...)
   )
 }
+
 
 odbcDataSources_r2r <- function(type = c("all", "user", "system")) {
   remote_access_query(
@@ -139,12 +121,6 @@ odbcDataSources_r2r <- function(type = c("all", "user", "system")) {
 sqlFetch_r2r <- function(data, name = NULL, ...) {
   remote_access_query(
     what       = "sqlQuery",
-    args_local =
-      c(
-        list(dat       = data,
-             tablename = name),
-        list(...)
-      )
+    args_local = list(dat = data, tablename = name, ...)
   )
 }
-
