@@ -81,31 +81,15 @@ odbcConnectAccess2007 <- function(
   pwd    = "",
   socket = .GlobalEnv$.r2r_socket) {
 
-  ref <-
-    r2r::eval_remote(
-      expr = .append_con(
-        RODBC::odbcConnectAccess2007(
-          access.file = access.file,
-          uid         = uid,
-          pwd         = pwd)
-      ),
-      data = list(
-        access.file = access.file,
-        uid         = uid,
-        pwd         = pwd
-      ),
-      socket = socket
-    )
+  arguments <- list(access.file = access.file, uid = uid, pwd = pwd)
 
-  new_con <-
-    list(
-      socket = socket,
-      ref    = ref
-    )
+  ref <- r2r::eval_remote(
+    expr = .append_con(do.call(RODBC::odbcConnectAccess2007, arguments)),
+    data = list(arguments = arguments),
+    socket = socket
+  )
 
-  class(new_con) <- "odbc32"
-
-  return(new_con)
+  create_odbc32_object(socket, ref)
 }
 
 #' establish ODBC connection defined by DSN name
@@ -121,31 +105,15 @@ odbcConnect <- function(
   pwd = "",
   socket = .GlobalEnv$.r2r_socket) {
 
-  ref <-
-    r2r::eval_remote(
-      expr = .append_con(
-        RODBC::odbcConnect(
-          dsn = dsn,
-          uid = uid,
-          pwd = pwd)
-      ),
-      data = list(
-        dsn = dsn,
-        uid = uid,
-        pwd = pwd
-      ),
-      socket = socket
-    )
+  arguments <- list(dsn = dsn, uid = uid, pwd = pwd)
 
-  new_con <-
-    list(
-      socket = socket,
-      ref    = ref
-    )
+  ref <- r2r::eval_remote(
+    expr = .append_con(do.call(RODBC::odbcConnect, arguments)),
+    data = list(arguments = arguments),
+    socket = socket
+  )
 
-  class(new_con) <- "odbc32"
-
-  return(new_con)
+  create_odbc32_object(socket, ref)
 }
 
 #' establish ODBC connection based on a connection string
@@ -172,15 +140,7 @@ odbcDriverConnect <- function(
       socket = socket
     )
 
-  new_con <-
-    list(
-      socket = socket,
-      ref    = ref
-    )
-
-  class(new_con) <- "odbc32"
-
-  return(new_con)
+  create_odbc32_object(socket, ref)
 }
 
 
