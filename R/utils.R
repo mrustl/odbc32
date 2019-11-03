@@ -9,3 +9,14 @@ rscript_path <- function(arch = "i386")
 
   file.path(R.home(), "bin", arch, "Rscript.exe")
 }
+
+#' Path to File in This Package
+#'
+#' @param \dots passed to \code{\link{system.file}}
+#' @param mustWork passed to \code{\link{system.file}}
+#' @return absolute file path to a file in the installation folder of this
+#'   package
+package_file <- function(..., mustWork = FALSE)
+{
+  system.file(..., package = "odbc32", mustWork = mustWork)
+}
