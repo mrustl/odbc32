@@ -4,7 +4,7 @@
 \alias{odbcDriverConnect}
 \title{establish ODBC connection based on a connection string}
 \usage{
-odbcDriverConnect(..., socket = .GlobalEnv$.r2r_socket)
+odbcDriverConnect(..., socket = default_socket())
 }
 \arguments{
 \item{...}{other args passed to RODBC::odbcDriverConnect()}

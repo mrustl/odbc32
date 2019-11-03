@@ -5,7 +5,7 @@
 \title{Connect to an Access 2007 database}
 \usage{
 odbcConnectAccess2007(access.file, uid = "", pwd = "",
-  socket = .GlobalEnv$.r2r_socket)
+  socket = default_socket())
 }
 \arguments{
 \item{access.file}{path to .accdb file}

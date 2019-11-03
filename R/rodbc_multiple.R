@@ -84,7 +84,7 @@ odbcConnectAccess <- function(
   access.file,
   uid    = "",
   pwd    = "",
-  socket = .GlobalEnv$.r2r_socket) {
+  socket = default_socket()) {
 
   arguments <- list(access.file = access.file, uid = uid, pwd = pwd)
 
@@ -113,7 +113,7 @@ odbcConnectAccess2007 <- function(
   access.file,
   uid    = "",
   pwd    = "",
-  socket = .GlobalEnv$.r2r_socket) {
+  socket = default_socket()) {
 
   arguments <- list(access.file = access.file, uid = uid, pwd = pwd)
 
@@ -137,7 +137,7 @@ odbcConnect <- function(
   dsn,
   uid = "",
   pwd = "",
-  socket = .GlobalEnv$.r2r_socket) {
+  socket = default_socket()) {
 
   arguments <- list(dsn = dsn, uid = uid, pwd = pwd)
 
@@ -157,7 +157,7 @@ odbcConnect <- function(
 #' @export
 odbcDriverConnect <- function(
   ...,
-  socket = .GlobalEnv$.r2r_socket) {
+  socket = default_socket()) {
 
   # RODBC::odbcDriverConnect()
   ref <-
@@ -239,7 +239,7 @@ close.odbc32 <- function(con) {
 #' @export
 odbcDataSources <- function(
   type = c("all", "user", "system"),
-  socket = .GlobalEnv$.r2r_socket) {
+  socket = default_socket()) {
 
   r2r::do.call_remote(
     RODBC::odbcDataSources,

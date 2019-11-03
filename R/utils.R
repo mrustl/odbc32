@@ -16,7 +16,17 @@ rscript_path <- function(arch = "i386")
 #' @param mustWork passed to \code{\link{system.file}}
 #' @return absolute file path to a file in the installation folder of this
 #'   package
+#'
 package_file <- function(..., mustWork = FALSE)
 {
   system.file(..., package = "odbc32", mustWork = mustWork)
+}
+
+#' Default Socket
+#'
+#' Currently, this is just a shortcut to \code{.GlobalEnv$.r2r_socket}
+#'
+default_socket <- function()
+{
+  .GlobalEnv$.r2r_socket
 }

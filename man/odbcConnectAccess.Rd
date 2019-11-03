@@ -5,7 +5,7 @@
 \title{Connect to an Access database (*.mdb)}
 \usage{
 odbcConnectAccess(access.file, uid = "", pwd = "",
-  socket = .GlobalEnv$.r2r_socket)
+  socket = default_socket())
 }
 \arguments{
 \item{access.file}{path to .mdb file}
