@@ -6,9 +6,8 @@
 \usage{
 start_server(address = "tcp://localhost",
   port = pbdZMQ::random_open_port(), arch = "i386",
-  Rbin = file.path(R.home(), "bin", arch, "Rscript.exe"),
-  r_args = NULL, invisible = FALSE, wait = FALSE, global = TRUE,
-  debug = FALSE)
+  Rbin = rscript_path(arch), r_args = NULL, invisible = FALSE,
+  wait = FALSE, global = TRUE, debug = FALSE)
 }
 \arguments{
 \item{address}{host address}

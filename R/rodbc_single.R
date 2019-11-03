@@ -8,7 +8,7 @@ start_server_access2007 <- function(
   address   = "tcp://*",
   port      = pbdZMQ::random_open_port(),
   arch      = "i386",
-  Rbin      = file.path(R.home(), "bin", arch, "Rscript.exe")
+  Rbin      = rscript_path(arch)
 ) {
 
   stopifnot(file.exists(accdb_fp))

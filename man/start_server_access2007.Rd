@@ -6,8 +6,7 @@
 \usage{
 start_server_access2007(accdb_fp, invisible = FALSE, wait = FALSE,
   address = "tcp://*", port = pbdZMQ::random_open_port(),
-  arch = "i386", Rbin = file.path(R.home(), "bin", arch,
-  "Rscript.exe"))
+  arch = "i386", Rbin = rscript_path(arch))
 }
 \description{
 Start r2r server connected to an Access database over 32-bit ODBC driver

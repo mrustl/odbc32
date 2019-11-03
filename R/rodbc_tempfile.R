@@ -2,7 +2,7 @@
 #' @export
 write_access_db <- function(rdata_file) {
 
-  system2(command = file.path(R.home(), "bin", "i386", "Rscript.exe"),
+  system2(command = rscript_path("i386"),
           args    =
             # c(system.file("Rscripts", "write_access_db.R",
             c(system.file("Rscripts", "write_access_db_rodbc.R",
