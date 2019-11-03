@@ -25,10 +25,18 @@ start_server <- function(
 ) {
   stopifnot(file.exists(Rbin))
 
-  cmd <-
+  commands <- c(
+    "library(r2r)",
+    "library(RODBC)",
+    "library(odbc32)",
+    "cons <- list()",
     sprintf(
-      '"library(r2r);library(RODBC);library(odbc32);cons <- list();r2r::server(port = %i, debug = %s)"', as.integer(port), as.character(debug)
+      "r2r::server(port = %i, debug = %s)",
+      as.integer(port), as.character(debug)
     )
+  )
+
+  cmd <- sprintf('"%s"', paste(commands, collapse = ";"))
 
   system2(
     command   = Rbin,
@@ -37,15 +45,14 @@ start_server <- function(
     wait      = wait
   )
 
-  socket <-
-    r2r::connect(
-      address = address,
-      port    = as.integer(port)
-    )
+  socket <- r2r::connect(
+    address = address,
+    port    = as.integer(port)
+  )
 
   if (global) r2r::save_socket(socket)
 
-  return(invisible(socket))
+  invisible(socket)
 }
 
 
