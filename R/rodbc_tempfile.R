@@ -3,12 +3,10 @@
 write_access_db <- function(rdata_file) {
 
   system2(command = rscript_path("i386"),
-          args    =
-            # c(system.file("Rscripts", "write_access_db.R",
-            c(system.file("Rscripts", "write_access_db_rodbc.R",
-                          package = "odbc32",
-                          mustWork = FALSE),
-              rdata_file))
+          args    = c(
+            # package_file("Rscripts", "write_access_db.R)",
+            package_file("Rscripts", "write_access_db_rodbc.R"),
+            rdata_file))
 }
 
 #' @title writing data into MS Access via 32bit R session script

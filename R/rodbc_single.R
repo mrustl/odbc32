@@ -16,16 +16,12 @@ start_server_access2007 <- function(
 
   # start 32-bit R with r2r server
   system2(command = Rbin,
-          args    =
-            # c(system.file("Rscripts", "write_access_db.R",
-            c(system.file("Rscripts", "start_remote_odbc_server_access.R",
-                          package = "odbc32",
-                          mustWork = FALSE),
-              accdb_fp,
-              sub(pattern     = "localhost",
-                  replacement = "*",
-                  x           = address),
-              port),
+          args    = c(
+            # package_file("Rscripts", "write_access_db.R"),
+            package_file("Rscripts", "start_remote_odbc_server_access.R"),
+            accdb_fp,
+            sub("localhost", "*", address),
+            port),
           invisible = invisible,
           wait = wait)
 
