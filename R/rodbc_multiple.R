@@ -16,7 +16,7 @@ start_server <- function(
   address   = "tcp://localhost",
   port      = pbdZMQ::random_open_port(),
   arch      = "i386",
-  Rbin      = file.path(R.home(), "bin", arch, "Rscript.exe"),
+  Rbin      = rscript_path(arch),
   r_args    = NULL, # --vanilla
   invisible = FALSE,
   wait      = FALSE,
