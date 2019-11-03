@@ -5,7 +5,7 @@
 \title{list data sources}
 \usage{
 odbcDataSources(type = c("all", "user", "system"),
-  socket = .GlobalEnv$.r2r_socket)
+  socket = default_socket())
 }
 \arguments{
 \item{type}{see type param of RODBC::odbcDataSources()}

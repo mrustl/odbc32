@@ -4,7 +4,7 @@
 \alias{odbcConnect}
 \title{establish ODBC connection defined by DSN name}
 \usage{
-odbcConnect(dsn, uid = "", pwd = "", socket = .GlobalEnv$.r2r_socket)
+odbcConnect(dsn, uid = "", pwd = "", socket = default_socket())
 }
 \arguments{
 \item{dsn}{dsn}
