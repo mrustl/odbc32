@@ -86,17 +86,41 @@ odbcConnectAccess <- function(
   pwd    = "",
   socket = default_socket()) {
 
-  arguments <- list(access.file = access.file, uid = uid, pwd = pwd)
+  connect_remotely(
+    socket,
+    FUN = RODBC::odbcConnectAccess,
+    access.file = access.file,
+    uid = uid,
+    pwd = pwd
+  )
+}
+
+#' Connect to Database Via ODBC using RODBC
+#'
+#' This helper function is used by \itemize{
+#'   \item \code{\link{odbcConnectAccess}}
+#'   \item \code{\link{odbcConnectAccess2007}}
+#'   \item \code{\link{odbcConnect}}
+#'   \item \code{\link{odbcDriverConnect}}
+#' }
+#'
+#' @param socket socket
+#' @param FUN function to be called remotely
+#' @param \dots arguments to be passed to \code{FUN}
+#' @return odbc32 object
+#'
+connect_remotely <- function(socket, FUN, ...)
+{
+  arguments <- list(...)
 
   ref <- r2r::eval_remote(
-    expr = .append_con(do.call(RODBC::odbcConnectAccess, arguments)),
-    data = list(arguments = arguments),
+    expr = .append_con(do.call(FUN, arguments)),
+    data = list(FUN = FUN, arguments = arguments),
     socket = socket
   )
 
   create_odbc32_object(socket, ref)
 }
-
 
 #' Connect to an Access 2007 database
 #'
@@ -115,15 +139,13 @@ odbcConnectAccess2007 <- function(
   pwd    = "",
   socket = default_socket()) {
 
-  arguments <- list(access.file = access.file, uid = uid, pwd = pwd)
-
-  ref <- r2r::eval_remote(
-    expr = .append_con(do.call(RODBC::odbcConnectAccess2007, arguments)),
-    data = list(arguments = arguments),
-    socket = socket
+  connect_remotely(
+    socket,
+    FUN = RODBC::odbcConnectAccess2007,
+    access.file = access.file,
+    uid = uid,
+    pwd = pwd
   )
-
-  create_odbc32_object(socket, ref)
 }
 
 #' establish ODBC connection defined by DSN name
@@ -139,15 +161,13 @@ odbcConnect <- function(
   pwd = "",
   socket = default_socket()) {
 
-  arguments <- list(dsn = dsn, uid = uid, pwd = pwd)
-
-  ref <- r2r::eval_remote(
-    expr = .append_con(do.call(RODBC::odbcConnect, arguments)),
-    data = list(arguments = arguments),
-    socket = socket
+  connect_remotely(
+    socket,
+    FUN = RODBC::odbcConnect,
+    dsn = dsn,
+    uid = uid,
+    pwd = pwd
   )
-
-  create_odbc32_object(socket, ref)
 }
 
 #' establish ODBC connection based on a connection string
@@ -160,21 +180,11 @@ odbcDriverConnect <- function(
   socket = default_socket()) {
 
   # RODBC::odbcDriverConnect()
-  ref <-
-    r2r::eval_remote(
-      expr = .append_con(
-        do.call(
-          RODBC::odbcDriverConnect,
-          args = argslist
-        )
-      ),
-      data = list(
-        argslist = list(...)
-      ),
-      socket = socket
-    )
-
-  create_odbc32_object(socket, ref)
+  connect_remotely(
+    socket,
+    FUN = RODBC::odbcDriverConnect,
+    ...
+  )
 }
 
 
