@@ -23,12 +23,13 @@ test_that("sqlTables works", {
 })
 
 test_that("Tables can be created", {
-  res <- 
+  res <-
     odbc32::sqlSave(
-      con = accdb_con, 
-      data = df1, 
-      name = "testtable1", 
-      rownames = FALSE
+      con = accdb_con,
+      data = df1,
+      name = "testtable1",
+      rownames = FALSE,
+      safer = FALSE
     )
   expect_equal(res, 1)
   table_list <- odbc32::sqlTables(accdb_con)
@@ -46,9 +47,9 @@ test_that("Queries can be executed", {
 
 test_that("Queries fails with error", {
   expect_error(
-    res <- 
+    res <-
       odbc32::sqlQuery(
-        accdb_con, 
+        accdb_con,
         query = "select * from nonexistent"
       )
   )
