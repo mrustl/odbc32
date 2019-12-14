@@ -88,7 +88,7 @@ odbcConnectAccess <- function(
 
   connect_remotely(
     socket,
-    FUN = RODBC::odbcConnectAccess,
+    FUN = "odbcConnectAccess",
     access.file = access.file,
     uid = uid,
     pwd = pwd
@@ -109,13 +109,13 @@ odbcConnectAccess <- function(
 #' @param \dots arguments to be passed to \code{FUN}
 #' @return odbc32 object
 #'
-connect_remotely <- function(socket, FUN, ...)
+connect_remotely <- function(socket, FUN, ns = "RODBC", ...)
 {
   arguments <- list(...)
 
   ref <- r2r::eval_remote(
-    expr = .append_con(do.call(FUN, arguments)),
-    data = list(FUN = FUN, arguments = arguments),
+    expr = .append_con(do.call(get(FUN, asNamespace(ns)), arguments)),
+    data = list(FUN = FUN, ns = ns, arguments = arguments),
     socket = socket
   )
 
@@ -141,7 +141,7 @@ odbcConnectAccess2007 <- function(
 
   connect_remotely(
     socket,
-    FUN = RODBC::odbcConnectAccess2007,
+    FUN = "odbcConnectAccess2007",
     access.file = access.file,
     uid = uid,
     pwd = pwd
@@ -163,7 +163,7 @@ odbcConnect <- function(
 
   connect_remotely(
     socket,
-    FUN = RODBC::odbcConnect,
+    FUN = "odbcConnect",
     dsn = dsn,
     uid = uid,
     pwd = pwd
@@ -182,7 +182,7 @@ odbcDriverConnect <- function(
   # RODBC::odbcDriverConnect()
   connect_remotely(
     socket,
-    FUN = RODBC::odbcDriverConnect,
+    FUN = "odbcDriverConnect",
     ...
   )
 }
