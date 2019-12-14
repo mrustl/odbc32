@@ -4,8 +4,12 @@
 \alias{odbcConnectAccess2007}
 \title{Connect to an Access 2007 database}
 \usage{
-odbcConnectAccess2007(access.file, uid = "", pwd = "",
-  socket = default_socket())
+odbcConnectAccess2007(
+  access.file,
+  uid = "",
+  pwd = "",
+  socket = default_socket()
+)
 }
 \arguments{
 \item{access.file}{path to .accdb file}

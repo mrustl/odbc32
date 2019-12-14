@@ -4,8 +4,7 @@
 \alias{odbcDataSources}
 \title{list data sources}
 \usage{
-odbcDataSources(type = c("all", "user", "system"),
-  socket = default_socket())
+odbcDataSources(type = c("all", "user", "system"), socket = default_socket())
 }
 \arguments{
 \item{type}{see type param of RODBC::odbcDataSources()}

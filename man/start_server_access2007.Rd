@@ -4,9 +4,15 @@
 \alias{start_server_access2007}
 \title{Start r2r server connected to an Access database over 32-bit ODBC driver}
 \usage{
-start_server_access2007(accdb_fp, invisible = FALSE, wait = FALSE,
-  address = "tcp://*", port = pbdZMQ::random_open_port(),
-  arch = "i386", Rbin = rscript_path(arch))
+start_server_access2007(
+  accdb_fp,
+  invisible = FALSE,
+  wait = FALSE,
+  address = "tcp://*",
+  port = pbdZMQ::random_open_port(),
+  arch = "i386",
+  Rbin = rscript_path(arch)
+)
 }
 \description{
 Start r2r server connected to an Access database over 32-bit ODBC driver

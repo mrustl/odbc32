@@ -4,7 +4,7 @@
 \alias{connect_remotely}
 \title{Connect to Database Via ODBC using RODBC}
 \usage{
-connect_remotely(socket, FUN, ...)
+connect_remotely(socket, FUN, ns = "RODBC", ...)
 }
 \arguments{
 \item{socket}{socket}

@@ -4,8 +4,7 @@
 \alias{odbcConnectAccess}
 \title{Connect to an Access database (*.mdb)}
 \usage{
-odbcConnectAccess(access.file, uid = "", pwd = "",
-  socket = default_socket())
+odbcConnectAccess(access.file, uid = "", pwd = "", socket = default_socket())
 }
 \arguments{
 \item{access.file}{path to .mdb file}

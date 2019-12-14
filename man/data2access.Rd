@@ -4,8 +4,15 @@
 \alias{data2access}
 \title{writing data into MS Access via 32bit R session script}
 \usage{
-data2access(data, accdb_file, overwrite = FALSE, fast = TRUE,
-  safer = TRUE, rownames = FALSE, ...)
+data2access(
+  data,
+  accdb_file,
+  overwrite = FALSE,
+  fast = TRUE,
+  safer = TRUE,
+  rownames = FALSE,
+  ...
+)
 }
 \arguments{
 \item{data}{a named list of tables}
