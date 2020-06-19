@@ -15,4 +15,5 @@ Imports:
 Suggests: 
     testthat
 Remotes:
-    github::vh-d/r2r
+    github::vh-d/r2r,
+    github::cran/RODBC@1.3-16
