@@ -1,3 +1,6 @@
+[![R-CMD-check](https://github.com/KWB-R/odbc32/workflows/R-CMD-check/badge.svg)](https://github.com/KWB-R/odbc32/actions?query=workflow%3AR-CMD-check)
+[![pkgdown](https://github.com/KWB-R/odbc32/workflows/pkgdown/badge.svg)](https://github.com/KWB-R/odbc32/actions?query=workflow%3Apkgdown)
+
 # odbc32
 
 The goal of odbc32 package is to allow connections via 32-bit ODBC drivers on a 64-bit R session.
